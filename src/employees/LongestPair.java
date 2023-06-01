@@ -54,42 +54,43 @@ public class LongestPair {
     }
 
     private void parseToProject(String line) {
+        if (line == null || line.isBlank() || line.isEmpty()) return;
+
         String[] pr = line.split(",");
         if (pr.length < 3) return;
+
         LocalDate l1;
         try {
             l1 = Date.stringToDate(pr[2]);
         } catch (InvalidDateException e) {
-            l1 = null;
+            return;
         }
         LocalDate l2;
 
-        if (pr.length >= 4 && pr[3] != null) {
+        if (pr.length >= 4 && pr[3] != null && !pr[3].isEmpty() && !pr[3].isBlank()) {
             try {
                 l2 = Date.stringToDate(pr[3].trim());
             } catch (InvalidDateException e) {
-                l2 = null;
+                return;
             }
         } else {
             l2 = LocalDate.now();
         }
-        if (l1 != null && l2 != null) {
-            int projectId = Integer.parseInt(pr[1].trim());
-            int empId = Integer.parseInt(pr[0].trim());
-            projects.putIfAbsent(projectId, new LinkedList<>());
-            projects.get(projectId).add(new ProjectEntry(empId, projectId, l1, l2));
-        }
+
+        int projectId = Integer.parseInt(pr[1].trim());
+        int empId = Integer.parseInt(pr[0].trim());
+        projects.putIfAbsent(projectId, new LinkedList<>());
+        projects.get(projectId).add(new ProjectEntry(empId, projectId, l1, l2));
     }
 
     public LongestPair(Reader empInfo) {
         projects = new HashMap<>();
 
-
         try (var bufferedReader = new BufferedReader(empInfo)) {
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
-                 parseToProject(line.trim());
+                parseToProject(line.trim());
             }
 
         } catch (IOException e) {
