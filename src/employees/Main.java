@@ -25,8 +25,7 @@ public class Main {
             } else {
                 System.out.println("Couldn't find this file.");
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
