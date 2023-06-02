@@ -14,7 +14,6 @@ import java.util.Map;
 public class LongestPair {
     private final Map<Integer, List<ProjectEntry>> projects;
 
-
     private Map<Pair, CommonWork> makePairs() {
         Map<Pair, CommonWork> res = new HashMap<>();
         for (List<ProjectEntry> l : projects.values()) {
@@ -30,8 +29,10 @@ public class LongestPair {
                             emp1 = emp2;
                             emp2 = temp;
                         }
-                        res.putIfAbsent(new Pair(emp1, emp2), new CommonWork(emp1, emp2, new HashMap<>(), 0));
-                        res.get(new Pair(emp1, emp2)).addProject(l.get(i).projectID(), time);
+                        if (emp1 != emp2) {
+                            res.putIfAbsent(new Pair(emp1, emp2), new CommonWork(emp1, emp2, new HashMap<>(), 0));
+                            res.get(new Pair(emp1, emp2)).addProject(l.get(i).projectID(), time);
+                        }
                     }
                 }
             }
